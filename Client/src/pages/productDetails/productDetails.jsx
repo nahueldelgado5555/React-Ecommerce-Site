@@ -19,7 +19,7 @@ export const ProductDetails = () => {
   }
 
   // If the product exists, render its details
-  const { productName, description, productImage, price } = product;
+  const { productName, productImage, price } = product;
 
   return (
     <div className="product-container">
