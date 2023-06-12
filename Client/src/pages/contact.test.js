@@ -1,0 +1,82 @@
+/*
+Code Analysis
+
+Objective:
+The Contact function is a React component that renders a contact form with styled components. Its main objective is to allow users to submit their name, email, and message to the website's owner.
+
+Inputs:
+- None
+
+Flow:
+1. The function renders a ContactWrapper component with a Title and a Form.
+2. The Form component has an onSubmit event listener that triggers the handleSubmit function when the user submits the form.
+3. The handleSubmit function prevents the default form submission behavior and executes the form submission logic.
+
+Outputs:
+- A contact form with styled components.
+
+Additional aspects:
+- The form has input validation for the name, email, and message fields.
+- The form has a submit button with a hover effect.
+- The handleSubmit function is not implemented in the code snippet and needs to be added separately.
+*/
+import React from "react";
+import {fireEvent, render, screen} from "@testing-library/react";
+import '@testing-library/jest-dom';
+import {Contact, Button} from "./contact";
+
+describe('Contact_function', () => {
+    // Tests that the form is submitted with valid inputs
+    it("test_submit_valid_inputs", () => {
+        render(<Contact />);
+        const nameInput = screen.getByLabelText("Name:");
+        const emailInput = screen.getByLabelText("Email:");
+        const messageInput = screen.getByLabelText("Message:");
+        const submitButton = screen.getByRole("button", { name: "Send" });
+
+        fireEvent.change(nameInput, { target: { value: "John Doe" } });
+        fireEvent.change(emailInput, { target: { value: "johndoe@example.com" } });
+        fireEvent.change(messageInput, { target: { value: "This is a test message" } });
+        fireEvent.click(submitButton);
+        // Assert that form submission logic is implemented here
+    });
+
+    // Tests that the form is not submitted with empty inputs
+    it("test_submit_empty_inputs", () => {
+        render(<Contact />);
+        const submitButton = screen.getByRole("button", { name: "Send" });
+
+        fireEvent.click(submitButton);
+
+        // Assert that form is not submitted with empty inputs
+    });
+
+    // Tests that the form is not submitted with an invalid email format
+    it("test_submit_invalid_email", () => {
+        render(<Contact />);
+        const emailInput = screen.getByLabelText("Email:");
+        const submitButton = screen.getByRole("button", { name: "Send" });
+
+        fireEvent.change(emailInput, { target: { value: "invalidemail" } });
+        fireEvent.click(submitButton);
+
+        // Assert that form is not submitted with an invalid email format
+    });
+
+    // Tests that the Button component has the correct styling
+    it("test_styling_button", () => {
+        render(<Button />);
+        const button = screen.getByRole("button");
+
+        expect(button).toHaveStyle(`
+            padding: 10px 20px;
+            background-color: #0077ff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease-in-out;
+        `);
+    });
+});

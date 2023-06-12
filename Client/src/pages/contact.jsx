@@ -35,7 +35,7 @@ const TextArea = styled.textarea`
   width: 100%;
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
   padding: 10px 20px;
   background-color: #0077ff;
   color: #fff;
@@ -49,6 +49,8 @@ const Button = styled.button`
     background-color: #0060cb;
   }
 `;
+
+
 
 export const Contact = () => {
   const handleSubmit = (e) => {
