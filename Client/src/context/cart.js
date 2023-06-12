@@ -1,11 +1,6 @@
 import { PRODUCTS } from "../products";
 
 export default class Cart {
-  constructor(cartItems, setCartItems) {
-    this.cartItems = cartItems;
-    this.setCartItems = setCartItems;
-  }
-
   static getDefaultCart = () => {
     let cart = {};
     for (let i = 1; i < PRODUCTS.length + 1; i++) {
@@ -14,39 +9,22 @@ export default class Cart {
     return cart;
   };
 
-  getTotalCartAmount = () => {
+  static getTotalCartAmount = (currentCart) => {
     let totalAmount = 0;
-    for (const item in this.cartItems) {
-      if (this.cartItems[item] > 0) {
+    for (const item in currentCart) {
+      if (currentCart[item] > 0) {
         let itemInfo = PRODUCTS.find((product) => product.id === Number(item));
-        totalAmount += this.cartItems[item] * itemInfo.price;
+        totalAmount += currentCart[item] * itemInfo.price;
       }
     }
     return totalAmount;
   };
 
-  addToCart = (itemId) => {
-    this.setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
-  };
+  static addToCart = (itemId, currentCart) => ({ ...currentCart, [itemId]: currentCart[itemId] + 1 });
 
-  removeFromCart = (itemId) => {
-    this.setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
-  };
+  static removeFromCart = (itemId, currentCart) => ({ ...currentCart, [itemId]: currentCart[itemId] - 1 });
 
-  updateCartItemCount = (newAmount, itemId) => {
-    this.setCartItems((prev) => ({ ...prev, [itemId]: newAmount }));
-  };
+  static updateCartItemCount = (newAmount, itemId, currentCart) => ({ ...currentCart, [itemId]: newAmount });
 
-  checkout = () => {
-    this.setCartItems(this.constructor.getDefaultCart());
-  };
-
-  getContextValue = () => ({
-    cartItems: this.cartItems,
-    addToCart: this.addToCart,
-    updateCartItemCount: this.updateCartItemCount,
-    removeFromCart: this.removeFromCart,
-    getTotalCartAmount: this.getTotalCartAmount,
-    checkout: this.checkout,
-  });
+  static checkout = () => Cart.getDefaultCart();
 }

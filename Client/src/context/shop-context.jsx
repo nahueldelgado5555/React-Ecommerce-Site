@@ -6,10 +6,17 @@ export const ShopContext = createContext(null);
 export const ShopContextProvider = (props) => {
   const [cartItems, setCartItems] = useState(Cart.getDefaultCart());
 
-  const cart = new Cart(cartItems, setCartItems);
+  const context = {
+    cartItems,
+    addToCart: (itemId) => setCartItems(Cart.addToCart.bind(null, itemId)),
+    updateCartItemCount: (newAmount, itemId) => setCartItems(Cart.updateCartItemCount.bind(null, newAmount, itemId)),
+    removeFromCart: (itemId) => setCartItems(Cart.removeFromCart().bind(null, itemId)),
+    getTotalCartAmount: () => Cart.getTotalCartAmount(cartItems),
+    checkout: () => setCartItems(Cart.checkout),
+  };
 
   return (
-    <ShopContext.Provider value={cart.getContextValue()}>
+    <ShopContext.Provider value={context}>
       {props.children}
     </ShopContext.Provider>
   );
