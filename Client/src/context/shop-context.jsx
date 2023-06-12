@@ -12,7 +12,7 @@ export const ShopContextProvider = (props) => {
     updateCartItemCount: (newAmount, itemId) => setCartItems(Cart.updateCartItemCount.bind(null, newAmount, itemId)),
     removeFromCart: (itemId) => setCartItems(Cart.removeFromCart().bind(null, itemId)),
     getTotalCartAmount: () => Cart.getTotalCartAmount(cartItems),
-    checkout: () => setCartItems(Cart.checkout),
+    checkout: () => setCartItems(Cart.getDefaultCart),
   };
 
   return (

@@ -25,6 +25,4 @@ export default class Cart {
   static removeFromCart = (itemId, currentCart) => ({ ...currentCart, [itemId]: currentCart[itemId] - 1 });
 
   static updateCartItemCount = (newAmount, itemId, currentCart) => ({ ...currentCart, [itemId]: newAmount });
-
-  static checkout = () => Cart.getDefaultCart();
 }

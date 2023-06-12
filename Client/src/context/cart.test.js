@@ -1,92 +1,143 @@
 import Cart from "./cart";
-
+import { PRODUCTS } from "../products";
 /*
 Code Analysis
 
 Main functionalities:
-The Cart class is responsible for managing the items in a shopping cart. It provides methods for adding, removing, and updating the quantity of items in the cart, as well as calculating the total amount of the cart and checking out.
+The Cart class provides functionality for managing a shopping cart. It allows for adding, removing, and updating the quantity of items in the cart, as well as calculating the total amount of the cart. It also provides a method for checking out, which returns a default empty cart.
 
 Methods:
-- getDefaultCart(): returns an object representing an empty cart with all item quantities set to 0
-- getTotalCartAmount(): calculates and returns the total amount of the cart based on the current item quantities and their prices
-- addToCart(itemId): increments the quantity of the item with the given ID in the cart
-- removeFromCart(itemId): decrements the quantity of the item with the given ID in the cart
-- updateCartItemCount(newAmount, itemId): sets the quantity of the item with the given ID in the cart to the given value
-- checkout(): clears the cart by setting all item quantities to 0
-- getContextValue(): returns an object containing the current cart items, as well as all the above methods for manipulating the cart
+- getDefaultCart(): returns a default empty cart object
+- getTotalCartAmount(currentCart): calculates and returns the total amount of the cart based on the current items and their quantities
+- addToCart(itemId, currentCart): adds one item with the specified ID to the cart and returns the updated cart object
+- removeFromCart(itemId, currentCart): removes one item with the specified ID from the cart and returns the updated cart object
+- updateCartItemCount(newAmount, itemId, currentCart): updates the quantity of the item with the specified ID in the cart to the new amount and returns the updated cart object
+- checkout(): returns a default empty cart object
 
 Fields:
-- cartItems: an object representing the current state of the cart, with item IDs as keys and their respective quantities as values
-- setCartItems: a function for updating the cartItems field, passed in as a parameter to the constructor
+- None. The class does not have any fields.
 */
 
-export const log = logMsg => console.log(logMsg);
+
 
 describe('Cart_class', () => {
 
-    // Testea que un artículo se ha añadido al carrito de compra
+    // Tests that getDefaultCart returns an object with all items initialized to 0
+    it("test_get_default_cart", () => {
+        const expectedCart = {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+            6: 0
+        };
+        expect(Cart.getDefaultCart()).toEqual(expectedCart);
+    });
+
+    // Tests that addToCart adds one item to the cart
     it("test_add_to_cart", () => {
-        const cartItems = { 1: 0, 2: 0 };
-        const setCartItems = jest.fn();
-        const cart = new Cart(cartItems, setCartItems);
-        cart.addToCart(1);
-        const save = setCartItems.mock.calls[0][0];
-        expect(save(cartItems)).toEqual({ 1: 1, 2: 0 });
+        const currentCart = {
+            1: 2,
+            2: 1,
+            3: 0,
+            4: 3,
+            5: 0,
+            6: 1
+        };
+        const expectedCart = {
+            1: 2,
+            2: 1,
+            3: 0,
+            4: 3,
+            5: 1,
+            6: 1
+        };
+        expect(Cart.addToCart(5, currentCart)).toEqual(expectedCart);
     });
 
-    it("test_add_to_cart2", () => {
-        const cartItems = { 1: 0, 2: 0 };
-        const setCartItems = jest.fn((prev) => ({...prev, [itemId]: prev[itemId] + 1}));
+    // Tests that addToCart adds one item to the cart
+    it("test_add_to_cart_when_there_are_more_than_0", () => {
+        const currentCart = {
+            1: 2,
+            2: 1,
+            3: 0,
+            4: 3,
+            5: 0,
+            6: 1
+        };
+        const expectedCart = {
+            1: 2,
+            2: 1,
+            3: 0,
+            4: 4,
+            5: 0,
+            6: 1
+        };
+        expect(Cart.addToCart(4, currentCart)).toEqual(expectedCart);
+    });
 
-        const cart = new Cart(cartItems, setCartItems);
-
-        const itemId = 1;
-        cart.addToCart(itemId);
-
-        const expectedCartItems = { ...cartItems, [itemId]: cartItems[itemId] + 1 };
-        const actualCartItems = cart.cartItems;
-        expect(actualCartItems).toEqual(expectedCartItems);
-    })
-
-    //  Testea que un artículo se ha eliminado del carrito de compra
+    // Tests that removeFromCart removes one item from the cart
     it("test_remove_from_cart", () => {
-        const cartItems = { 1: 2, 2: 0 };
-        const setCartItems = jest.fn();
-        const cart = new Cart(cartItems, setCartItems);
-        cart.removeFromCart(1);
-        expect(setCartItems).toHaveBeenCalledWith({ 1: 1, 2: 0 });
+        const currentCart = {
+            1: 2,
+            2: 1,
+            3: 0,
+            4: 3,
+            5: 1,
+            6: 1
+        };
+        const expectedCart = {
+            1: 2,
+            2: 1,
+            3: 0,
+            4: 3,
+            5: 0,
+            6: 1
+        };
+        expect(Cart.removeFromCart(5, currentCart)).toEqual(expectedCart);
     });
 
-    //  Testea que un artículo se ha actualizado en el carrito de compra
+    // Tests that updateCartItemCount updates the item count in the cart
     it("test_update_cart_item_count", () => {
-        const cartItems = { 1: 2, 2: 0 };
-        const setCartItems = jest.fn();
-        const cart = new Cart(cartItems, setCartItems);
-        cart.updateCartItemCount(3, 1);
-        expect(setCartItems).toHaveBeenCalledWith({ 1: 3, 2: 0 });
+        const currentCart = {
+            1: 2,
+            2: 1,
+            3: 0,
+            4: 3,
+            5: 1,
+            6: 1
+        };
+        const expectedCart = {
+            1: 2,
+            2: 1,
+            3: 0,
+            4: 3,
+            5: 2,
+            6: 1
+        };
+        expect(Cart.updateCartItemCount(2, 5, currentCart)).toEqual(expectedCart);
     });
 
-    // Tests that an error is thrown when adding a nonexistent item to the cart
-    it("test_add_nonexistent_item_to_cart", () => {
-        const cartItems = { 1: 2, 2: 0 };
-        const setCartItems = jest.fn();
-        const cart = new Cart(cartItems, setCartItems);
-        expect(() => cart.addToCart(3)).toThrowError("Item does not exist in products list");
+    // Tests that getTotalCartAmount returns the correct total amount for a given cart
+    it("test_get_total_cart_amount", () => {
+        const currentCart = {
+            1: 2,
+            2: 1,
+            3: 0,
+            4: 3,
+            5: 0,
+            6: 1
+        };
+        const expectedTotalAmount = (2 * PRODUCTS[0].price) + (1 * PRODUCTS[1].price) + (3 * PRODUCTS[3].price) + (1 * PRODUCTS[5].price);
+        expect(Cart.getTotalCartAmount(currentCart)).toEqual(expectedTotalAmount);
     });
 
-    // Tests that an error is thrown when removing an item with a count of zero
-    it("test_remove_item_when_count_is_zero", () => {
-        const cartItems = { 1: 0, 2: 0 };
-        const setCartItems = jest.fn();
-        const cart = new Cart(cartItems, setCartItems);
-        expect(() => cart.removeFromCart(1)).toThrowError("Item count is already zero");
+    it("test_get_total_cart_amount_empty_cart", () => {
+        const emptyCart = Cart.getDefaultCart();
+        const totalAmount = Cart.getTotalCartAmount(emptyCart);
+        expect(totalAmount).toBe(0);
     });
 
-    // Tests that an error is thrown when updating the item count to a negative value
-    it("test_update_cart_item_count_negative_value", () => {
-        const cartItems = { 1: 2, 2: 0 };
-        const setCartItems = jest.fn();
-        const cart = new Cart(cartItems, setCartItems);
-        expect(() => cart.updateCartItemCount(-1, 1)).toThrowError("Item count cannot be negative");
-    });
+
 });
