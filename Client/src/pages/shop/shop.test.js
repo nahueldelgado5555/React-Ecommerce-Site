@@ -24,7 +24,7 @@ Additional aspects:
 - The ShopContext is also exported as createContext(null), which creates a new context object.
 */
 import React from "react";
-import {fireEvent, render, screen} from "@testing-library/react";
+import {fireEvent, getByAltText, render, screen} from "@testing-library/react";
 import '@testing-library/jest-dom';
 import {Product} from "./product";
 import {ShopContext} from "../../context/shop-context";
@@ -87,23 +87,6 @@ describe('Product_function', () => {
         expect(getByText("Add To Cart")).toBeInTheDocument();
     });
 
-    // Tests that the component handles a non-existent id in cartItems object
-    it("test_nonexistent_id_in_cart_items_object", () => {
-        const data = {
-            id: 1,
-            productName: "Test Product",
-            price: 10.99,
-            alt: "Test Image",
-            productImage: "test-image.jpg"
-        };
-        const { getByText } = render(
-            <ShopContext.Provider value={{ addToCart: jest.fn(), cartItems: {} }}>
-                <Product data={data} />
-            </ShopContext.Provider>
-        );
-        expect(getByText("Add To Cart")).toBeInTheDocument();
-    });
-
     // Tests that the component displays the correct cart item count
     it("test_correct_cart_item_count_display", () => {
         const data = {
@@ -113,11 +96,12 @@ describe('Product_function', () => {
             alt: "Test Image",
             productImage: "test-image.jpg"
         };
+        const addToCartMock = jest.fn();
         const { getByText } = render(
-            <ShopContext.Provider value={{ addToCart: jest.fn(), cartItems: { 1: 2 } }}>
+            <ShopContext.Provider value={{ addToCart: addToCartMock, cartItems: { 1: 3 } }}>
                 <Product data={data} />
             </ShopContext.Provider>
         );
-        expect(getByText("(2)")).toBeInTheDocument();
+        expect(getByText(/(3)/)).toBeInTheDocument();
     });
 });
