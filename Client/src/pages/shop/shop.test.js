@@ -111,6 +111,6 @@ describe('Product_function', () => {
                 </MemoryRouter>
             </ShopContext.Provider>
         );
-        expect(getByText(/(3)/)).toBeInTheDocument();
+        expect(getByText("Add To Cart (3)")).toBeInTheDocument();
     });
 });
