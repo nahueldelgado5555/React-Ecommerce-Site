@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import {Link, MemoryRouter} from "react-router-dom";
+import {Link} from "react-router-dom";
 import { ShopContext } from "../../context/shop-context";
 
 export const Product = (props) => {
@@ -10,7 +10,6 @@ export const Product = (props) => {
 
   return (
     <div className="product">
-        <MemoryRouter>
           <Link to={`/product/${id}`} className="product-link">
             <img src={productImage} alt={alt} />
             <div className="description">
@@ -23,7 +22,6 @@ export const Product = (props) => {
           <button className="addToCartBttn" onClick={() => addToCart(id)}>
             Add To Cart {cartItemCount > 0 && <> ({cartItemCount})</>}
           </button>
-        </MemoryRouter>
     </div>
   );
 };

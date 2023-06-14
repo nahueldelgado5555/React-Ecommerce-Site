@@ -28,6 +28,7 @@ import {fireEvent, getByAltText, render, screen} from "@testing-library/react";
 import '@testing-library/jest-dom';
 import {Product} from "./product";
 import {ShopContext} from "../../context/shop-context";
+import {MemoryRouter} from "react-router-dom";
 
 
 describe('Product_function', () => {
@@ -43,7 +44,9 @@ describe('Product_function', () => {
         };
         const { getByText, getByAltText } = render(
             <ShopContext.Provider value={{ addToCart: jest.fn(), cartItems: {} }}>
-                <Product data={data} />
+                <MemoryRouter>
+                    <Product data={data} />
+                </MemoryRouter>
             </ShopContext.Provider>
         );
         expect(getByText("Test Product")).toBeInTheDocument();
@@ -63,7 +66,9 @@ describe('Product_function', () => {
         const addToCartMock = jest.fn();
         const { getByText } = render(
             <ShopContext.Provider value={{ addToCart: addToCartMock, cartItems: {} }}>
-                <Product data={data} />
+                <MemoryRouter>
+                    <Product data={data} />
+                </MemoryRouter>
             </ShopContext.Provider>
         );
         fireEvent.click(getByText("Add To Cart"));
@@ -81,7 +86,9 @@ describe('Product_function', () => {
         };
         const { getByText } = render(
             <ShopContext.Provider value={{ addToCart: jest.fn(), cartItems: {} }}>
-                <Product data={data} />
+                <MemoryRouter>
+                    <Product data={data} />
+                </MemoryRouter>
             </ShopContext.Provider>
         );
         expect(getByText("Add To Cart")).toBeInTheDocument();
@@ -99,7 +106,9 @@ describe('Product_function', () => {
         const addToCartMock = jest.fn();
         const { getByText } = render(
             <ShopContext.Provider value={{ addToCart: addToCartMock, cartItems: { 1: 3 } }}>
-                <Product data={data} />
+                <MemoryRouter>
+                    <Product data={data} />
+                </MemoryRouter>
             </ShopContext.Provider>
         );
         expect(getByText(/(3)/)).toBeInTheDocument();
