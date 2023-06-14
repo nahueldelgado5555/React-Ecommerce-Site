@@ -21,7 +21,7 @@ Additional aspects:
 - The handleSubmit function is not implemented in the code snippet and needs to be added separately.
 */
 import React from "react";
-import {fireEvent, render, screen} from "@testing-library/react";
+import {fireEvent, getByText, render, screen} from "@testing-library/react";
 import '@testing-library/jest-dom';
 import {Contact, Button} from "./contact";
 

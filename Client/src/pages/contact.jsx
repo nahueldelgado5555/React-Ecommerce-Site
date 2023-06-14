@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 
 const ContactWrapper = styled.div`
@@ -53,21 +53,48 @@ export const Button = styled.button`
 
 
 export const Contact = () => {
+
+    const [formData, setFormData] = useState({
+      name: "",
+      email: "",
+      message: "",
+    });
   const handleSubmit = (e) => {
     e.preventDefault();
-    // implement form submission logic here
+    console.log(formData); // Por ahora, simplemente muestra los datos del formulario en la consola
+    setFormData({
+      name: "",
+      email: "",
+      message: "",
+      congrat: "Gracias por enviarnos tu mensaje"
+    });
   };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+    const congratTextArea = document.getElementById('congrat');
+    congratTextArea.removeAttribute('hidden');
+  };
+
+
 
   return (
     <ContactWrapper>
       <Title>Contact Us</Title>
       <Form onSubmit={handleSubmit}>
         <label htmlFor="name">Name:</label>
-        <Input type="text" id="name" name="name" required />
+        <Input type="text" id="name" name="name" required value={formData.name}
+               onChange={handleChange} />
         <label htmlFor="email">Email:</label>
-        <Input type="email" id="email" name="email" required />
+        <Input type="email" id="email" name="email" required value={formData.email}
+               onChange={handleChange} />
         <label htmlFor="message">Message:</label>
-        <TextArea id="message" name="message" required></TextArea>
+        <TextArea id="message" name="message" required value={formData.message}
+                  onChange={handleChange}></TextArea>
+        <p id="congrat" onChange={handleChange} hidden>Gracias por tu mensaje</p>
         <Button type="submit">Send</Button>
       </Form>
     </ContactWrapper>
