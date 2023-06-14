@@ -5,7 +5,7 @@ import product4 from "./assets/products/4.webp";
 import product5 from "./assets/products/5.png";
 import product6 from "./assets/products/6.png";
 
-export const PRODUCTS = [
+export const getProducts = () => [
   {
     id: 1,
     productName: "Apple IPhone 14",

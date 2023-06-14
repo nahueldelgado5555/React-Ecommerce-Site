@@ -1,9 +1,9 @@
-import { PRODUCTS } from "../products";
+import { getProducts } from "../products";
 
 export default class Cart {
   static getDefaultCart = () => {
     let cart = {};
-    for (let i = 1; i < PRODUCTS.length + 1; i++) {
+    for (let i = 1; i < getProducts().length + 1; i++) {
       cart[i] = 0;
     }
     return cart;
@@ -13,7 +13,7 @@ export default class Cart {
     let totalAmount = 0;
     for (const item in currentCart) {
       if (currentCart[item] > 0) {
-        let itemInfo = PRODUCTS.find((product) => product.id === Number(item));
+        let itemInfo = getProducts().find((product) => product.id === Number(item));
         totalAmount += currentCart[item] * itemInfo.price;
       }
     }

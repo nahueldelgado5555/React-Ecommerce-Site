@@ -1,5 +1,5 @@
 import Cart from "./cart";
-import { PRODUCTS } from "../products";
+import { getProducts } from "../products";
 /*
 Code Analysis
 
@@ -129,7 +129,7 @@ describe('Cart_class', () => {
             5: 0,
             6: 1
         };
-        const expectedTotalAmount = (2 * PRODUCTS[0].price) + (1 * PRODUCTS[1].price) + (3 * PRODUCTS[3].price) + (1 * PRODUCTS[5].price);
+        const expectedTotalAmount = (2 * getProducts()[0].price) + (1 * getProducts()[1].price) + (3 * getProducts()[3].price) + (1 * getProducts()[5].price);
         expect(Cart.getTotalCartAmount(currentCart)).toEqual(expectedTotalAmount);
     });
 

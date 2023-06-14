@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { ShopContext } from "../../context/shop-context";
-import { PRODUCTS } from "../../products";
+import { getProducts } from "../../products";
 import "./productDetails.css";
 
 export const ProductDetails = () => {
@@ -11,7 +11,7 @@ export const ProductDetails = () => {
   const cartItemCount = cartItems[id];
 
   // Find the product with the given ID
-  const product = PRODUCTS.find((p) => p.id === Number(id));
+  const product = getProducts().find((p) => p.id === Number(id));
 
   // If the product doesn't exist, return an error message
   if (!product) {

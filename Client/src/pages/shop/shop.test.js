@@ -23,10 +23,13 @@ Additional aspects:
 - The ShopContext is imported from "../../context/shop-context".
 - The ShopContext is also exported as createContext(null), which creates a new context object.
 */
+
+let mockProducts = [];
+jest.mock("../../products", () => ({ getProducts: () => mockProducts }));
 import React from "react";
 import {fireEvent, getByAltText, render, screen} from "@testing-library/react";
 import '@testing-library/jest-dom';
-import {Product} from "./product";
+import {Shop} from "./shop";
 import {ShopContext} from "../../context/shop-context";
 import {MemoryRouter} from "react-router-dom";
 
@@ -42,10 +45,11 @@ describe('Product_function', () => {
             alt: "Test Image",
             productImage: "test-image.jpg"
         };
+        mockProducts = [data];
         const { getByText, getByAltText } = render(
             <ShopContext.Provider value={{ addToCart: jest.fn(), cartItems: {} }}>
                 <MemoryRouter>
-                    <Product data={data} />
+                    <Shop />
                 </MemoryRouter>
             </ShopContext.Provider>
         );
@@ -63,11 +67,12 @@ describe('Product_function', () => {
             alt: "Test Image",
             productImage: "test-image.jpg"
         };
+        mockProducts = [data];
         const addToCartMock = jest.fn();
         const { getByText } = render(
             <ShopContext.Provider value={{ addToCart: addToCartMock, cartItems: {} }}>
                 <MemoryRouter>
-                    <Product data={data} />
+                    <Shop />
                 </MemoryRouter>
             </ShopContext.Provider>
         );
@@ -84,10 +89,11 @@ describe('Product_function', () => {
             alt: "Test Image",
             productImage: "test-image.jpg"
         };
+        mockProducts = [data];
         const { getByText } = render(
             <ShopContext.Provider value={{ addToCart: jest.fn(), cartItems: {} }}>
                 <MemoryRouter>
-                    <Product data={data} />
+                    <Shop />
                 </MemoryRouter>
             </ShopContext.Provider>
         );
@@ -103,11 +109,12 @@ describe('Product_function', () => {
             alt: "Test Image",
             productImage: "test-image.jpg"
         };
+        mockProducts = [data];
         const addToCartMock = jest.fn();
         const { getByText } = render(
             <ShopContext.Provider value={{ addToCart: addToCartMock, cartItems: { 1: 3 } }}>
                 <MemoryRouter>
-                    <Product data={data} />
+                    <Shop />
                 </MemoryRouter>
             </ShopContext.Provider>
         );
